@@ -1,0 +1,71 @@
+
+
+// Title - Live Granular input
+// Author - Ashley Sagar
+// Meanwood Audio Research And Recording
+// AKA M/A/R/R/S
+
+
+
+/*
+
+What am I?
+
+A granular synth that processes a live input
+
+
+1 - make a synthdef
+    1.1 needs
+    1.2 - Audio in
+    1.3 MonoGrain
+
+2 - build a gui
+
+
+*/
+
+
+s.boot;
+s.quit;
+
+(
+
+(
+SynthDef(\liveGranulator, {
+	arg out = 0, gate=1,wSize=0.1,gRate=10,winRand=0, amp = 1;
+
+	var src, env;
+	env = EnvGen.kr(Env.asr(1,1,1), gate, doneAction:2);
+
+	src = SoundIn.ar(0, 0.5);
+	src = MonoGrain.ar(src, wSize,gRate,winRand,amp);
+
+	Out.ar(out, Pan2.ar(src*env, 0.0,amp));
+}).add;
+);
+
+/*
+//test
+a = Synth(\liveGranulator)
+a.set(\wSize, 0.4)
+a.set(\gRate, 6)
+a.set(\winRand, 1)
+a.set(\wSize, 0.1)
+*/
+
+//gui
+
+(
+Window.closeAll;
+s.meter;
+w = Window.new("liveGranulator", Rect(400,100, 300,300)).front
+.background_(Color.new255(0, 100, 255, 120));
+
+
+//power button
+
+
+
+)
+
+)
